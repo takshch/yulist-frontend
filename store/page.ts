@@ -28,7 +28,7 @@ export const actions = {
       const page = response.data
       commit('add', page)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   },
 }

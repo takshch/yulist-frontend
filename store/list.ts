@@ -15,7 +15,6 @@ export const state = (): StateConfig => ({
 
 export const mutations = {
   add(state: StateConfig, payload: object): void {
-    console.log('add', payload)
     state.lists.push(payload)
   },
 }
