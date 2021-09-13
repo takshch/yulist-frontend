@@ -4,7 +4,6 @@ const baseURL = '/mockapi'
 const API = {
   listByID: (id: number) => `${baseURL}/list/${id}.json`,
 }
-
 interface StateConfig {
   lists: Array<any>
 }
@@ -27,7 +26,7 @@ export const actions = {
       const list = response.data
       commit('add', list)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   },
 }
@@ -35,6 +34,7 @@ export const actions = {
 export const getters = {
   getListById: (state: StateConfig) => (id: number) => {
     const list = state.lists.filter((list) => list.id === id)
+    console.log('list', list)
     return list[0]
   },
 }

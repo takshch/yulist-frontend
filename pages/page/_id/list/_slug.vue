@@ -1,10 +1,5 @@
 <template>
-  <div class="page">
-    <h1 class="page__heading">{{ page.name }}</h1>
-    <div class="page__lists">
-      <List v-for="(item, index) in page.lists" :key="index" :id="item.id" />
-    </div>
-  </div>
+  <div>Hello World</div>
 </template>
 
 <script lang="ts">
@@ -14,14 +9,14 @@ import { mapGetters } from 'vuex'
 export default Vue.extend({
   async mounted() {
     const id = this.$route.params.slug
-    await this.$store.dispatch('page/load', id)
+    await this.$store.dispatch('list/load', id)
   },
   computed: {
-    ...mapGetters({ getPageById: 'page/getPageById' }),
-    page(): object {
+    ...mapGetters({ getPageById: 'list/getListById' }),
+    list(): object {
       const id = parseInt(this.$route.params.slug, 10)
-      const page = this.getPageById(id)
-      return page ? page : {}
+      const list = this.getListById(id)
+      return list ? list : {}
     },
   },
 })

@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Vue from 'vue/types/umd'
 
 const baseURL = '/mockapi'
 const API = {

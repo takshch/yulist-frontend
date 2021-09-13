@@ -1,12 +1,17 @@
 <template>
-  <div class="list" v-if="list">
+  <nuxt-link
+    :to="`/page/${pageId}/list/${list.id}`"
+    tag="div"
+    class="list"
+    v-if="list"
+  >
     <div class="list__header">{{ list.name }}</div>
     <div class="list__body">
       <ol class="list__section">
         <li v-for="(item, index) in list.items" :key="index">{{ item }}</li>
       </ol>
     </div>
-  </div>
+  </nuxt-link>
 </template>
 
 <script lang="ts">
@@ -17,7 +22,11 @@ export default Vue.extend({
   props: {
     id: {
       type: Number,
-      default: 1,
+      required: true,
+    },
+    pageId: {
+      type: Number,
+      required: true,
     },
   },
   async mounted() {
@@ -41,6 +50,8 @@ export default Vue.extend({
   width: 12em;
   border-radius: 4px;
   margin: 15px 10px;
+  cursor: pointer;
+  color: black;
 }
 
 .list__header {
