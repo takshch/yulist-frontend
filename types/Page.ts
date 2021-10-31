@@ -1,9 +1,8 @@
-export default interface List {
+export default interface Page {
   id: number
   name: string
-  items: string[]
+  lists: number[]
   userId: number
   createdAt: string
   modifiedAt: string
-  pageId: number
 }
