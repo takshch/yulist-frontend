@@ -1,4 +1,11 @@
-# yulist-frontend
+# YULIST Frontend
+
+## Screenshot
+  - Route: **Page**
+    ![image](https://user-images.githubusercontent.com/26649558/139603106-0429264e-f7cb-420e-aa97-267d82b29f3a.png)
+  - **List**
+    ![image](https://user-images.githubusercontent.com/26649558/139603135-d6786d8e-c6d9-4f49-b852-4c1d14d52a22.png)
+
 
 ## Build Setup
 
