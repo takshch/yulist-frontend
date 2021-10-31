@@ -24,8 +24,8 @@ export const mutations = {
     { pageId, lists }: { pageId: number; lists: number[] }
   ): void {
     console.log('editLists')
-    const page = Object.assign(state.pages[pageId], { lists });
-    state.pages[pageId] = page;
+    const page = Object.assign(state.pages[pageId], { lists })
+    state.pages[pageId] = page
   },
 }
 
@@ -47,7 +47,7 @@ export const actions = {
     try {
       console.log('deleteList')
       const url = API.pageByID(pageId)
-      console.log('page', state.pages[pageId]);
+      console.log('page', state.pages[pageId])
       const lists: number[] = state.pages[pageId].lists.filter(
         (id) => id !== listId
       )
@@ -62,11 +62,28 @@ export const actions = {
       console.error(e)
     }
   },
+  async addList(
+    { state, commit }: { state: StateConfig; commit: Function },
+    { pageId, listId }: { pageId: number; listId: number }
+  ) {
+    const page = state.pages[pageId]
+    const lists = [...page.lists]
+    lists.unshift(listId)
+
+    try {
+      const url = API.pageByID(pageId)
+      await axios.patch(url, lists)
+      page.lists = lists
+      commit('editLists', { pageId, lists })
+    } catch (e) {
+      console.error(e)
+    }
+  },
 }
 
 export const getters = {
   getPageById: (state: StateConfig) => (id: number) => {
     const page = state.pages[id]
-    return page;
+    return page
   },
 }
