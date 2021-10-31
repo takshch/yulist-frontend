@@ -18,13 +18,15 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
+import Page from '~/types/Page'
 
 export default Vue.extend({
   computed: {
     ...mapGetters({ getPageById: 'page/getPageById' }),
-    page(): object {
+    page(): Page | object {
       const id = parseInt(this.$route.params.id, 10)
       const page = this.getPageById(id)
+      console.log(page);
       return page || {}
     },
   },

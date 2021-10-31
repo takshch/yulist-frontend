@@ -25,6 +25,9 @@ export const mutations = {
       (list as any)[prop] = (changes as any)[prop];
     }
   },
+  delete(state: StateConfig, id: number) {
+    state.lists.splice(id, 1);
+  }
 }
 
 export const actions = {
@@ -51,6 +54,15 @@ export const actions = {
       commit('edit', { changes, id })
     } catch (e) {
       console.error(e)
+    }
+  },
+  async delete({ commit }: { commit: Function }, id: number) {
+    try {
+      const url = API.listByID(id);
+      await axios.delete(url);
+      commit('delete', id);
+    } catch (e) {
+
     }
   },
 }
