@@ -1,5 +1,7 @@
 <template>
-  <div>Hello World</div>
+  <Modal>
+    <List :id="list.id" />
+  </Modal>
 </template>
 
 <script lang="ts">
@@ -12,7 +14,7 @@ export default Vue.extend({
     await this.$store.dispatch('list/load', id)
   },
   computed: {
-    ...mapGetters({ getPageById: 'list/getListById' }),
+    ...mapGetters({ getListById: 'list/getListById' }),
     list(): object {
       const id = parseInt(this.$route.params.slug, 10)
       const list = this.getListById(id)

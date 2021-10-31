@@ -1,15 +1,17 @@
 <template>
-  <div class="page">
+  <div v-if="page" class="page">
     <h1 class="page__heading">{{ page.name }}</h1>
     <div class="page__lists">
-      <List
-        v-for="(listId, index) in page.lists"
-        :key="index"
-        :id="listId"
-        :pageId="page.id"
-      />
+      <template v-for="(listId, index) in page.lists">
+        <List :id="listId" :key="index" />
+        <!-- <NuxtLink
+          :to="`/list/${listId}`"
+          :key="index"
+          class="unstylize-href"
+        >
+        </NuxtLink> -->
+      </template>
     </div>
-    <NuxtChild />
   </div>
 </template>
 
@@ -18,22 +20,27 @@ import Vue from 'vue'
 import { mapGetters } from 'vuex'
 
 export default Vue.extend({
-  async mounted() {
-    const id = this.$route.params.id
-    await this.$store.dispatch('page/load', id)
-  },
   computed: {
     ...mapGetters({ getPageById: 'page/getPageById' }),
     page(): object {
       const id = parseInt(this.$route.params.id, 10)
       const page = this.getPageById(id)
-      return page ? page : {}
+      return page || {}
     },
+  },
+  async mounted() {
+    const id = this.$route.params.id
+    await this.$store.dispatch('page/load', id)
   },
 })
 </script>
 
 <style>
+.unstylize-href {
+  text-decoration: none;
+  color: unset;
+}
+
 .page {
   display: flex;
   align-items: center;

@@ -1,17 +1,19 @@
 <template>
-  <nuxt-link
-    :to="`/page/${pageId}/list/${list.id}`"
-    tag="div"
-    class="list"
-    v-if="list"
-  >
+  <div v-if="list" class="list">
     <div class="list__header">{{ list.name }}</div>
     <div class="list__body">
       <ol class="list__section">
-        <li v-for="(item, index) in list.items" :key="index">{{ item }}</li>
+        <li
+          v-for="(item, index) in list.items"
+          :key="index"
+          class="list__item"
+          contenteditable=""
+        >
+          {{ item }}
+        </li>
       </ol>
     </div>
-  </nuxt-link>
+  </div>
 </template>
 
 <script lang="ts">
@@ -24,20 +26,16 @@ export default Vue.extend({
       type: Number,
       required: true,
     },
-    pageId: {
-      type: Number,
-      required: true,
-    },
-  },
-  async mounted() {
-    const id = this.$props.id
-    await this.$store.dispatch('list/load', id)
   },
   computed: {
     ...mapGetters({ getListById: 'list/getListById' }),
     list(): object {
       return this.getListById(this.$props.id)
     },
+  },
+  async created() {
+    const id = this.$props.id
+    await this.$store.dispatch('list/load', id)
   },
 })
 </script>
@@ -46,18 +44,22 @@ export default Vue.extend({
 .list {
   display: flex;
   flex-direction: column;
-  border: 1px solid grey;
+  border: 1px solid #d1d1d1;
   width: 12em;
   border-radius: 4px;
   margin: 15px 10px;
   cursor: pointer;
   color: black;
+  box-shadow: 2px 2px 4px -1px #dddddd, -2px -2px 4px -1px #dddddd;
+  background: #fff;
 }
 
 .list__header {
   padding: 10px 5px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #d1d1d1;
   text-align: center;
+  color: #023047;
+  font-weight: bold;
 }
 
 .list__body {
@@ -69,6 +71,15 @@ export default Vue.extend({
 }
 
 .list__item {
-  margin: 4px 0;
+  margin: 6px 0;
+  color: #023047;
+}
+
+.list__item:focus {
+  outline: none;
+}
+
+.list__item::marker {
+  color: #d00000;
 }
 </style>

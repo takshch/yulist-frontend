@@ -34,7 +34,6 @@ export const actions = {
 export const getters = {
   getListById: (state: StateConfig) => (id: number) => {
     const list = state.lists.filter((list) => list.id === id)
-    console.log('list', list)
     return list[0]
   },
 }
