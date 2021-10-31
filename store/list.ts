@@ -19,8 +19,11 @@ export const mutations = {
   add(state: StateConfig, payload: List): void {
     Vue.set(state.lists, payload.id, payload)
   },
-  edit(state: StateConfig, payload: List): void {
-    Vue.set(state.lists, payload.id, payload)
+  edit(state: StateConfig, { changes, id }: { changes: List; id: number }): void {
+    const list = state.lists[id]
+    for(const prop of Object.keys(changes)) {
+      (list as any)[prop] = (changes as any)[prop];
+    }
   },
 }
 
@@ -37,15 +40,15 @@ export const actions = {
   },
   async edit(
     { commit }: { commit: Function },
-    list: List
+    { changes, id } : {
+      changes: List,
+      id: number,
+    }
   ): Promise<void> {
     try {
-      const listId = list.id
-      const url = API.listByID(listId)
-      await axios.patch(url, {
-        items: list.items,
-      })
-      commit('edit', list)
+      const url = API.listByID(id)
+      await axios.patch(url, changes)
+      commit('edit', { changes, id })
     } catch (e) {
       console.error(e)
     }
