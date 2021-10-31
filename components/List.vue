@@ -1,8 +1,15 @@
 <template>
   <div v-if="list" class="list">
     <div v-if="isLoading" class="list__loading"></div>
-    <div class="list__header">{{ list.name }}</div>
-    <button v-if="hasItemsChanged" class="list__option" @click="saveList">
+    <div
+      class="list__header"
+      contenteditable=""
+      @input="changeName"
+      @blur="saveName"
+    >
+      {{ list.name }}
+    </div>
+    <button v-if="hasItemsChanged" class="list__option" @click="saveChangedItems">
       Save
     </button>
     <div class="list__body">
@@ -59,17 +66,40 @@ export default Vue.extend({
       Vue.set(this.$data.items, id, value)
       this.$data.hasItemsChanged = true
     },
-    async saveList() {
-      this.$data.isLoading = true;
+    async saveChangedItems() {
+      this.$data.hasItemsChanged = false
+      this.$data.isLoading = true
 
-      const _list = this.list
-      this.items.forEach((value, index) => (_list.items[index] = value))
+      const items = this.list.items.map((value, index) => {
+        const item = this.items[index]
+        if (item) return item
+        return value
+      })
 
-      await this.$store.dispatch('list/edit', _list)
-      this.$data.hasItemsChanged = false;
-      this.$data.isLoading = true;
+      await this.$store.dispatch('list/edit', {
+        changes: {
+          items,
+        },
+        id: this.list.id,
+      })
 
-      this.$data.isLoading = false;
+      this.$data.isLoading = false
+    },
+    changeName(e: any) {
+      const value = e.target.textContent
+      this.$data.name = value
+    },
+    async saveName() {
+      this.$data.isLoading = true
+
+       await this.$store.dispatch('list/edit', {
+        changes: {
+          name: this.$data.name,
+        },
+        id: this.list.id,
+      })
+
+      this.$data.isLoading = false
     },
   },
 })

@@ -28,9 +28,9 @@
   "lists": [
     {
       "id": 1,
-      "name": "Kirana 1",
+      "name": "\n    Week 2",
       "items": [
-        "Chana Masala\n      ",
+        "Mirchi Powder",
         "Chole Masala",
         "Chicken Masala",
         "Milk - 2 Litre",
@@ -44,7 +44,7 @@
     },
     {
       "id": 2,
-      "name": "Kirana 2",
+      "name": "\n    Week 1",
       "items": [
         "Kisan ketchup\n      ",
         "sambar masala",
@@ -60,7 +60,7 @@
     },
     {
       "id": 3,
-      "name": "Kirana 3",
+      "name": "Kirana 2",
       "items": [
         "kisan ketchup",
         "sambar masala",
@@ -76,7 +76,7 @@
     },
     {
       "id": 4,
-      "name": "Kirana 4",
+      "name": "Kirana 3",
       "items": [
         "kisan ketchup",
         "sambar masala",
