@@ -1,11 +1,14 @@
 import axios from 'axios'
+import Vue from 'vue'
+import List from '../types/List';
 
-const baseURL = '/mockapi'
+const baseURL = 'http://localhost:5000';
 const API = {
-  listByID: (id: number) => `${baseURL}/list/${id}.json`,
+  listByID: (id: number) => `${baseURL}/lists/${id}`,
 }
+
 interface StateConfig {
-  lists: Array<any>
+  lists: Array<List>
 }
 
 export const state = (): StateConfig => ({
@@ -13,8 +16,11 @@ export const state = (): StateConfig => ({
 })
 
 export const mutations = {
-  add(state: StateConfig, payload: object): void {
-    state.lists.push(payload)
+  add(state: StateConfig, payload: List): void {
+    Vue.set(state.lists, payload.id, payload)
+  },
+  edit(state: StateConfig, payload: List): void {
+    Vue.set(state.lists, payload.id, payload)
   },
 }
 
@@ -25,6 +31,21 @@ export const actions = {
       const response = await axios.get(url)
       const list = response.data
       commit('add', list)
+    } catch (e) {
+      console.error(e)
+    }
+  },
+  async edit(
+    { commit }: { commit: Function },
+    list: List
+  ): Promise<void> {
+    try {
+      const listId = list.id
+      const url = API.listByID(listId)
+      await axios.patch(url, {
+        items: list.items,
+      })
+      commit('edit', list)
     } catch (e) {
       console.error(e)
     }
