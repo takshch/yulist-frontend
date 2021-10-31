@@ -1,10 +1,11 @@
 import axios from 'axios'
 import Vue from 'vue'
-import List from '../types/List';
+import List from '../types/List'
 
-const baseURL = 'http://localhost:5000';
+const baseURL = 'http://localhost:5000'
 const API = {
   listByID: (id: number) => `${baseURL}/lists/${id}`,
+  newList: `${baseURL}/lists`,
 }
 
 interface StateConfig {
@@ -16,18 +17,21 @@ export const state = (): StateConfig => ({
 })
 
 export const mutations = {
-  add(state: StateConfig, payload: List): void {
-    Vue.set(state.lists, payload.id, payload)
+  add(state: StateConfig, list: List): void {
+    Vue.set(state.lists, list.id, list)
   },
-  edit(state: StateConfig, { changes, id }: { changes: List; id: number }): void {
+  edit(
+    state: StateConfig,
+    { changes, id }: { changes: List; id: number }
+  ): void {
     const list = state.lists[id]
-    for(const prop of Object.keys(changes)) {
-      (list as any)[prop] = (changes as any)[prop];
+    for (const prop of Object.keys(changes)) {
+      ;(list as any)[prop] = (changes as any)[prop]
     }
   },
   delete(state: StateConfig, id: number) {
-    state.lists.splice(id, 1);
-  }
+    state.lists.splice(id, 1)
+  },
 }
 
 export const actions = {
@@ -43,9 +47,12 @@ export const actions = {
   },
   async edit(
     { commit }: { commit: Function },
-    { changes, id } : {
-      changes: List,
-      id: number,
+    {
+      changes,
+      id,
+    }: {
+      changes: List
+      id: number
     }
   ): Promise<void> {
     try {
@@ -58,11 +65,31 @@ export const actions = {
   },
   async delete({ commit }: { commit: Function }, id: number) {
     try {
-      const url = API.listByID(id);
-      await axios.delete(url);
-      commit('delete', id);
+      const url = API.listByID(id)
+      await axios.delete(url)
+      commit('delete', id)
+    } catch (e) {}
+  },
+  async add(
+    { commit }: { commit: Function },
+    { pageId, userId }: { pageId: number; userId: number }
+  ) {
+    const _list = {
+      name: 'New List',
+      items: ['write your items here...'],
+      userId,
+      pageId,
+      createdAt: '',
+      modifiedAt: '',
+    }
+    try {
+      const url = API.newList
+      const response = await axios.post(url, _list)
+      const list = response.data
+      commit('add', list)
+      return list;
     } catch (e) {
-
+      console.error(e)
     }
   },
 }
